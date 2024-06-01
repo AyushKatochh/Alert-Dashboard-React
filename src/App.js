@@ -20,7 +20,6 @@ const App = () => {
   return (
     <div>
       <h1 style={{'textAlign': 'center', 'marginBottom': '100px'}}>Alert Dashboard</h1>
-      console.log("Start");
       <Dashboard data={data} />
     </div>
   );
