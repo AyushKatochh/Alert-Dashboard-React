@@ -1,53 +1,65 @@
-// CategoryDistributionChart.js
-import React, { useEffect, useRef } from 'react';
-import Chart from 'chart.js/auto';
+import React from 'react';
+import { Line } from 'react-chartjs-2';
 
 const CategoryDistributionChart = ({ data }) => {
-  const chartRef = useRef(null);
-  const chartInstance = useRef(null);
-
-  useEffect(() => {
-    if (!data || data.length === 0) return; // Check if data is provided
-
-    if (chartInstance.current) {
-      chartInstance.current.destroy();
+  // Group data by timestamp (hourly)
+  const groupedData = data.reduce((acc, entry) => {
+    const date = new Date(entry.timestamp);
+    const hour = date.toISOString().split(':')[0]; // Get the hour part
+    if (!acc[hour]) {
+      acc[hour] = 0;
     }
+    acc[hour] += 1;
+    return acc;
+  }, {});
 
-    const categoryCounts = {};
-    data.forEach(entry => {
-      // Check if entry has the alert property
-      if (entry.alert) {
-        const category = entry.alert.category;
-        categoryCounts[category] = (categoryCounts[category] || 0) + 1;
-      }
-    });
+  const chartData = {
+    labels: Object.keys(groupedData),
+    datasets: [{
+      label: 'Number of Alerts',
+      data: Object.values(groupedData),
+      fill: true,
+      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      borderColor: 'rgba(75, 192, 192, 1)',
+      tension: 0.1
+    }]
+  };
 
-    const labels = Object.keys(categoryCounts);
-    const counts = Object.values(categoryCounts);
-
-    const ctx = chartRef.current.getContext('2d');
-    chartInstance.current = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Alert Distribution by Category',
-          data: counts,
-          backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 1
-        }]
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Number of Alerts'
+        }
       },
-    });
-
-    return () => {
-      if (chartInstance.current) {
-        chartInstance.current.destroy();
+      x: {
+        title: {
+          display: true,
+          text: 'Timestamp (hourly)'
+        },
+        ticks: {
+          maxRotation: 45,
+          minRotation: 45
+        }
       }
-    };
-  }, [data]);
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top'
+      }
+    }
+  };
 
-  return <canvas ref={chartRef} />;
+  return (
+    <div style={{ marginBottom: '50px', position: 'relative', height: '50vh' }}>
+      <Line data={chartData} options={options} />
+    </div>
+  );
 };
 
 export default CategoryDistributionChart;
