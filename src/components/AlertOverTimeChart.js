@@ -1,53 +1,56 @@
 import React from 'react';
-import { Line } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 
 const AlertOverTimeChart = ({ data }) => {
+  // Group data by alert category
+  const categoryCounts = data.reduce((acc, entry) => {
+    const category = entry.alert?.category || 'Unknown';
+    if (!acc[category]) {
+      acc[category] = 0;
+    }
+    acc[category] += 1;
+    return acc;
+  }, {});
+
   const chartData = {
-    labels: data.map(entry => entry.timestamp),
+    labels: Object.keys(categoryCounts),
     datasets: [{
-      label: 'Alerts Over Time',
-      data: data.map(entry => entry.alert_count),
-      fill: true,
-      backgroundColor: 'rgba(75, 192, 192, 0.2)',
-      borderColor: 'rgb(75, 192, 192)',
-      tension: 0.1
+      label: 'Alert Categories',
+      data: Object.values(categoryCounts),
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1
     }]
   };
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: 'Number of Alerts'
-        }
-      },
-      x: {
-        title: {
-          display: true,
-          text: 'Timestamp'
-        },
-        ticks: {
-          maxTicksLimit: 5,  // Limit number of x-axis labels
-          maxRotation: 0,    // Prevent rotation on smaller screens
-          minRotation: 0
-        }
-      }
-    },
     plugins: {
       legend: {
         display: true,
-        position: 'top'  // Move the legend to the top
+        position: 'top'
       }
     }
   };
 
   return (
     <div style={{ marginBottom: '50px', position: 'relative', height: '50vh' }}>
-      <Line data={chartData} options={options} />
+      <Pie data={chartData} options={options} />
     </div>
   );
 };
