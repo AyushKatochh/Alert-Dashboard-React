@@ -15,6 +15,8 @@ const AlertOverTimeChart = ({ data }) => {
   };
 
   const options = {
+    responsive: true,
+    maintainAspectRatio: false,
     scales: {
       y: {
         beginAtZero: true,
@@ -27,13 +29,24 @@ const AlertOverTimeChart = ({ data }) => {
         title: {
           display: true,
           text: 'Timestamp'
+        },
+        ticks: {
+          maxTicksLimit: 5,  // Limit number of x-axis labels
+          maxRotation: 0,    // Prevent rotation on smaller screens
+          minRotation: 0
         }
+      }
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top'  // Move the legend to the top
       }
     }
   };
 
   return (
-    <div style={{ marginBottom: '50px' }}>
+    <div style={{ marginBottom: '50px', position: 'relative', height: '50vh' }}>
       <Line data={chartData} options={options} />
     </div>
   );
