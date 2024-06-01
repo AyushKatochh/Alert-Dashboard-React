@@ -1,0 +1,38 @@
+/* Dashboard.css */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 900px; /* Adjust as needed */
+    margin: 0 auto; /* Center the dashboard */
+  }
+  
+  .chart-container {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 50px; /* Add some space between charts */
+    border: 0.2px solid #f0f0f0; /* Add light grey border */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Stats container */
+  .stats {
+    margin-top: 20px; /* Add some space between the chart and stats */
+    font-size: 18px; /* Adjust font size as needed */
+    text-align: center;
+  }
+
+  /* Update chart styles */
+  .chart {
+    width: 100%;
+    margin-bottom: 20px; /* Add some space between charts */
+  }
+
+  /* Increase font size of chart labels */
+  .chart-label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
