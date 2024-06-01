@@ -1,6 +1,7 @@
 {
   "name": "network-dashboard",
   "version": "0.1.0",
+  "proxy": "http://localhost:3000",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -20,7 +21,7 @@
   },
   "scripts": {
     "start": "react-scripts start ",
-    "build": "http-server --cors react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
